@@ -9,7 +9,7 @@ import HostModal from '../../Modal/HostModal'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 
 const Navbar = () => {
-  const { user, logOut } = useAuth()
+  const { user, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const axiosSecure = useAxiosSecure()
 

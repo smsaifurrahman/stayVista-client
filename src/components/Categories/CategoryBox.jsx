@@ -8,7 +8,7 @@ const CategoryBox = ({ label, icon: Icon }) => {
    const category = params.get('category')
    const navigate = useNavigate();
    
-   console.log(params.get('category'));
+   // console.log(params.get('category'));
 
    const handleClick = () => {
 

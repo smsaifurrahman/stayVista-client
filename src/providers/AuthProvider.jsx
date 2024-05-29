@@ -13,13 +13,15 @@ import {
 } from 'firebase/auth'
 import { app } from '../firebase/firebase.config'
 import axios from 'axios'
+// import useAxiosCommon from '../hooks/useAxioscommon'
 export const AuthContext = createContext(null)
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  // const axiosCommon = useAxiosCommon();
 
   const createUser = (email, password) => {
     setLoading(true)
@@ -55,11 +57,11 @@ const AuthProvider = ({ children }) => {
       photoURL: photo,
     })
   }
-  // Get token from server
+  //Get token from server
   const getToken = async email => {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_URL}/jwt`,
-      { email },
+      {email} ,
       { withCredentials: true }
     )
     return data
@@ -78,12 +80,36 @@ const AuthProvider = ({ children }) => {
 
   // onAuthStateChange
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, currentUser => {
-      setUser(currentUser)
+    const unsubscribe = onAuthStateChanged(auth,  currentUser => {
+      setUser(currentUser);
+
       if (currentUser) {
+        console.log('from useEffect', currentUser.email);
         getToken(currentUser.email);
-        saveUser(currentUser)
+         saveUser(currentUser)
       }
+
+          //   if(currentUser) {
+    //     // get token and store in client site
+    //     console.log('from auth vista', currentUser);
+    //     const userInfo = {email: currentUser}
+    //     axios.post(
+    //           `${import.meta.env.VITE_API_URL}/jwt`,
+    //           {userInfo} ,
+             
+    //         )
+    //     .then(res => {
+    //         if(res.data.token){
+    //             localStorage.setItem('access-token', res.data.token )
+    //             console.log('local storage');
+    //             saveUser(currentUser);
+    //         }
+            
+    //     })
+    // }else {
+    //     //todo: remove token(if token is stored in client site)
+    //     localStorage.removeItem('access-token')
+    // }
       setLoading(false)
     })
     return () => {
