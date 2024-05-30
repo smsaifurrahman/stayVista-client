@@ -8,7 +8,7 @@ import { differenceInCalendarDays } from "date-fns";
 import BookingModal from "../Modal/BookingModal";
 import useAuth from "../../hooks/useAuth";
 
-const RoomReservation = ({ room }) => {
+const RoomReservation = ({ room, refetch }) => {
    const {user} = useAuth();
    const [isOpen,setIsOpen] = useState(false);
    const [state, setState] = useState([
@@ -58,10 +58,10 @@ const RoomReservation = ({ room }) => {
          </div>
          <hr />
          <div onClick={()=> setIsOpen(true)} className="p-4">
-            <Button label={"Reserve"} />
+            <Button disabled= {room?.booked===true } label={room?.booked===true ? "Booked" :"Reserve"} />
          </div>
          {/* Modal */}
-         <BookingModal closeModal={closeModal} isOpen={isOpen} bookingInfo={{...room,price:totalPrice, guest: {name: user?.displayName}}}></BookingModal>
+         <BookingModal refetch= {refetch} closeModal={closeModal} isOpen={isOpen} bookingInfo={{...room,price:totalPrice, guest: {name: user?.displayName, email: user?.email, image: user?.photoURL}}}></BookingModal>
          <hr />
          
          <div className="p-4 flex items-center justify-between font-semibold text-lg">
