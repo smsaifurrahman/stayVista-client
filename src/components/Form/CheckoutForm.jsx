@@ -89,6 +89,7 @@ const CheckoutForm = ({ closeModal, bookingInfo,refetch }) => {
                },
             },
          });
+         
       if (confirmError) {
          console.log(confirmError);
          setCardError(confirmError.message);
